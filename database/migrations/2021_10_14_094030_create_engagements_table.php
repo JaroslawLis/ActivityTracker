@@ -16,14 +16,13 @@ class CreateEngagementsTable extends Migration
         Schema::create('engagements', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->date('date');
             $table->string('name', 20);
-            $table->text("descritpion")->nullable();
+            $table->text("description")->nullable();
             $table->date('starting_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->integer('type');
-            $table->integer('value');
-            $table->integer('max_value');
+            $table->integer('target');
+            $table->integer('max_value')->nullable();
         });
     }
 
