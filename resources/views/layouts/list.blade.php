@@ -1,25 +1,25 @@
-@extends('layouts.home')
+@extends('layouts.main')
 
 @section('content')
     <div class="card container" style="background:white;">
-        <div class="card-header"><i class="fas fa-table mr-1"></i>Lista użytkowników</div>
+        <div class="card-header"><i class="fas fa-table mr-1"></i>Activities List</div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table-fixed width="100%" cellspacing="0">
                     <thead>
                         <tr>
 
-                            <th>Id</th>
+                            <th>Lp</th>
                             <th>Name</th>
-                            <th>Opcje</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
 
-                            <th>Id</th>
-                            <th>Nick</th>
-                            <th>Opcje</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -28,8 +28,7 @@
                             <tr>
 
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $activity['id'] }}</td>
-                                 {{ $activity->name }}
+                                {{-- <td>{{ $activity['id'] }}</td> --}}
                                 <td>{{ $activity['name'] }}</td>
                                 {{-- <td><a href="{{ route('get.user.show', ['userId' => $user['id']]) }}">Szczegóły</a></td> --}}
                             </tr>

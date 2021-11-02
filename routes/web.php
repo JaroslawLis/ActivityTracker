@@ -1,42 +1,26 @@
 <?php
 
-use App\Models\Programming;
 use App\Models\Engagement;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Activity\ActivityController;
+use App\Http\Controllers\Activity\CheckinController;
 use App\Http\Controllers\ActiveController;
 use App\Http\Controllers\Activity\Test2controller;
 //use App\Http\Controllers\Activitycontroller;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return view('layouts.dashboard');
 });
 
-
-
-
-// Route::get('/', function () {
-//     return 'Hello World';
-// });
-// Route::get('/create', 'ActivityController@view')
-//     ->name('create');
 Route::get('/list', [ActivityController::class, 'list'])
     ->name('list');
 Route::get('/create', [ActivityController::class, 'index'])
     ->name('create');
-
 Route::post('/create', [ActivityController::class, 'create']);
+Route::get('/add_checkin', [CheckinController::class, 'index'])
+    ->name('add_checkin');
+Route::post('/add_checkin', [CheckinController::class, 'add_checkin']);
 
 
 Route::post('/create2', function () {
