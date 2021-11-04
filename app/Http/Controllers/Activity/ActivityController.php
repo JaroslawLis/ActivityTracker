@@ -28,8 +28,6 @@ class ActivityController extends Controller
         $activity->type = request('type');
         $activity->target = request('target');
         $activity->max_value = request('max_value');
-        // dd(request(), $activity, $_POST);
-        // dd($activity);
         $activity->save();
         return 'Add success';
     }
