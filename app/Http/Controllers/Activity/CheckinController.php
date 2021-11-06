@@ -16,7 +16,7 @@ class CheckinController extends Controller
     {
         //$Activities = Engagement::all();
         $date = Checkin::latest()->first();
-        $Activities = Engagement::whereDate('end_date', '>', $date)->orWhere('end_date', '=', null)->get();
+        $Activities = Engagement::whereDate('end_date', '<', $date)->orWhere('end_date', '=', null)->get();
         $last_entry_date = $date->date;
         $current_entry_date = Carbon::createFromDate($last_entry_date);
         $current_entry_date->add(1, 'day');
@@ -30,7 +30,7 @@ class CheckinController extends Controller
         $input_data = $request->input();
         $date = date("Y-m-d", strtotime($input_data['date']));
         $current_entry_date = Carbon::createFromDate($date);
-        $current_entry_date->add(1, 'day');
+        //$current_entry_date->add(1, 'day');
         $current_entry_date = $current_entry_date->toDateString();
         $checkins = array_filter($input_data, function ($k) {
             return ($k != '_token' && $k != 'date');
