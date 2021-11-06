@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Activity;
 
-
 use App\Http\Controllers\Controller;
 use App\Models\Engagement;
 use Illuminate\View\View;
@@ -11,7 +10,6 @@ use App\Repository\ActivityRepository;
 
 class ActivityController extends Controller
 {
-
 
     public function index(): View
     {
@@ -34,8 +32,6 @@ class ActivityController extends Controller
 
     public function list(): View
     {
-        // $this->middleware(Request::class);
-
         $activities = Engagement::all();
         return view('layouts.list', ['activities' => $activities]);
     }

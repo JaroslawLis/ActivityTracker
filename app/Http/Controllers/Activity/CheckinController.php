@@ -14,11 +14,15 @@ class CheckinController extends Controller
 {
     public function index(): View
     {
-        $Activities = Engagement::all();
+        //$Activities = Engagement::all();
         $date = Checkin::latest()->first();
+        $Activities = Engagement::whereDate('end_date', '>', $date)->orWhere('end_date', '=', null)->get();
         $last_entry_date = $date->date;
+        $current_entry_date = Carbon::createFromDate($last_entry_date);
+        $current_entry_date->add(1, 'day');
+        $current_entry_date = $current_entry_date->toDateString();
 
-        return view('layouts.add_checkin', ['activities' => $Activities, 'last_entry_date' => $last_entry_date]);
+        return view('layouts.add_checkin', ['activities' => $Activities, 'last_entry_date' => $current_entry_date]);
     }
 
     public function add_checkin(Request $request)
@@ -48,5 +52,9 @@ class CheckinController extends Controller
             $checkin->id_engagement = 0;
             $checkin->save();
         };
+    }
+
+    public function add_in_checkin()
+    {
     }
 }
