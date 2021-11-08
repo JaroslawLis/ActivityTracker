@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Engagement;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
-use App\Repository\ActivityRepository;
 
 class ActivityController extends Controller
 {
@@ -34,5 +33,15 @@ class ActivityController extends Controller
     {
         $activities = Engagement::all();
         return view('layouts.list', ['activities' => $activities]);
+    }
+
+    public function show(Request $request, int $activityId)
+    {
+        return $activityId;
+    }
+
+    public function edit(Request $request, int $activityId)
+    {
+        return $activityId;
     }
 }

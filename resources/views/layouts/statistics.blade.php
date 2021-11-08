@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="bg-white w-full p-14 h-screen overflow-hidden flex items-center justify-center  " style="background: #edf2f7;">
+<div class="bg-white w-full p-14 h-screen flex items-center justify-center" style="background: #edf2f7;">
 
 <table class="min-w-full border-collapse block md:table">
 		<thead class="block md:table-header-group">

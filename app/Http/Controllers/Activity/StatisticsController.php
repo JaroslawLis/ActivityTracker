@@ -20,7 +20,7 @@ class StatisticsController extends Controller
         } else {
             $value = abs($value);
             $hours = floor($value / 60);
-            $minutes = $value % 60;
+            $minutes = ($value % 60 <= 9) ? ('0' . $value % 60) : $value % 60;
             return ' -' . $hours . ':' . $minutes;
         }
     }
@@ -46,7 +46,6 @@ class StatisticsController extends Controller
             $current_month_stats[$value['name']]['current_target'] = ($value['type'] == 2) ? $this->ConvertTime($current_plan) : $current_plan;
             $current_month_stats[$value['name']]['surplus_shortage'] = ($value['type'] == 2) ? $this->ConvertTime($total - $current_plan) : $total - $current_plan;
         }
-
 
         return view('layouts.statistics', ['current_month_stats' => $current_month_stats]);
     }
