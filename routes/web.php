@@ -7,7 +7,7 @@ use App\Http\Controllers\Activity\StatisticsController;
 
 Route::get('/', function () {
     return view('layouts.dashboard');
-});
+})->name('main');
 
 Route::get('/list', [ActivityController::class, 'list'])
     ->name('list');

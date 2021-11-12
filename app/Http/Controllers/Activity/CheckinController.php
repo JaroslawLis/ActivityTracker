@@ -14,7 +14,6 @@ class CheckinController extends Controller
 {
     public function index(): View
     {
-        //$Activities = Engagement::all();
         $date = Checkin::latest()->first();
         $Activities = Engagement::whereDate('end_date', '<', $date)->orWhere('end_date', '=', null)->get();
         $last_entry_date = $date->date;
@@ -52,6 +51,8 @@ class CheckinController extends Controller
             $checkin->id_engagement = 0;
             $checkin->save();
         };
+
+        return redirect('add_checkin')->with('status', 'Form Data Has Been inserted');
     }
 
     public function add_in_checkin()
