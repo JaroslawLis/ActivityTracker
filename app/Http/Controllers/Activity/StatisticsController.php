@@ -29,6 +29,8 @@ class StatisticsController extends Controller
     {
         $today = Carbon::now();
         $today2 = Carbon::now();
+        $month_name = $today->monthName;
+        $year = $today->year;
         $days_in_this_month = $today->diffInDays($today->copy()->firstOfMonth());
         $firstOfmonth = $today2->firstOfMonth()->toDateString();
         $yesterday = $today->subDay(1)->toDateString();
@@ -40,13 +42,38 @@ class StatisticsController extends Controller
             $Checkins = Checkin::whereBetween('date', [$firstOfmonth, $yesterday])->where('id_engagement', '=', $value['id'])->get();
             $total = $Checkins->sum('value');
             $current_plan = $value['target'] * $days_in_this_month;
-            $avg = intval(ceil($Checkins->sum('value') / $days_in_this_month));
+            // $avg = intval(ceil($Checkins->sum('value') / $days_in_this_month));
+            $avg = round($Checkins->sum('value') / $days_in_this_month, 2);
             $current_month_stats[$value['name']]['total'] = ($value['type'] == 2) ? $this->ConvertTime($total) : $total;
             $current_month_stats[$value['name']]['avg'] = ($value['type'] == 2) ? $this->ConvertTime($avg) : $avg;
             $current_month_stats[$value['name']]['current_target'] = ($value['type'] == 2) ? $this->ConvertTime($current_plan) : $current_plan;
             $current_month_stats[$value['name']]['surplus_shortage'] = ($value['type'] == 2) ? $this->ConvertTime($total - $current_plan) : $total - $current_plan;
         }
 
-        return view('layouts.statistics', ['current_month_stats' => $current_month_stats]);
+        return view('statistics.current_month', ['current_month_stats' => $current_month_stats, 'month_name' => $month_name, 'year' => $year]);
+    }
+
+    public function monthly_statistics(Request $request, int $year, int $month)
+    {
+        $month_date = Carbon::create($year, $month);
+        $month_name = $month_date->monthName;
+        $days_in_this_month = $month_date->daysInMonth;
+        $firstOfmonth = $month_date->firstOfMonth()->toDateString();
+        $lastOfMonth = $month_date->lastOfMonth()->toDateString();
+        $Activities = Engagement::whereDate('end_date', '>', $firstOfmonth)->orWhere('end_date', '=', null)->get();
+        $month_stats = array();
+        foreach ($Activities as $value) {
+
+            $Checkins = Checkin::whereBetween('date', [$firstOfmonth, $lastOfMonth])->where('id_engagement', '=', $value['id'])->get();
+            $total = $Checkins->sum('value');
+            $current_plan = $value['target'] * $days_in_this_month;
+            $avg = round($Checkins->sum('value') / $days_in_this_month, 2);
+            $month_stats[$value['name']]['total'] = ($value['type'] == 2) ? $this->ConvertTime($total) : $total;
+            $month_stats[$value['name']]['avg'] = ($value['type'] == 2) ? $this->ConvertTime($avg) : $avg;
+            $month_stats[$value['name']]['current_target'] = ($value['type'] == 2) ? $this->ConvertTime($current_plan) : $current_plan;
+            $month_stats[$value['name']]['surplus_shortage'] = ($value['type'] == 2) ? $this->ConvertTime($total - $current_plan) : $total - $current_plan;
+        }
+
+        return view('statistics.month_stats', ['month_stats' => $month_stats, 'month_name' => $month_name, 'year' => $year]);
     }
 }

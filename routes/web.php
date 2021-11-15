@@ -24,3 +24,5 @@ Route::post('/add_checkin', [CheckinController::class, 'add_checkin']);
 Route::get('/add_in_checkin', [CheckinController::class, 'add_in_checkin']);
 Route::get('/statistics', [StatisticsController::class, 'statistics'])
     ->name('statistics');
+Route::get('/monthly_stat/{year}/{month}', [StatisticsController::class, 'monthly_statistics'])
+    ->name('monthly_statistics');
