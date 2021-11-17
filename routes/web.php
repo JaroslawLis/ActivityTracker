@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Activity\ActivityController;
 use App\Http\Controllers\Activity\CheckinController;
 use App\Http\Controllers\Activity\StatisticsController;
+use App\Http\Controllers\Activity\ChartJSController;
 
 Route::get('/', function () {
     return view('layouts.dashboard');
@@ -26,3 +27,6 @@ Route::get('/statistics', [StatisticsController::class, 'statistics'])
     ->name('statistics');
 Route::get('/monthly_stat/{year}/{month}', [StatisticsController::class, 'monthly_statistics'])
     ->name('monthly_statistics');
+
+Route::get('charts', [ChartJSController::class, 'index'])
+    ->name('current_charts');
