@@ -40,7 +40,7 @@ class ChartJSController extends Controller
                 $day = $label_day->copy()->toDateString();
                 $label_day = $label_day->addDay(1);
                 $incrementally = $incrementally + $chart_data[$day];
-                $average_chart_data[$day] = round($incrementally / $i, 0);
+                $average_chart_data[$day] = round($incrementally / $i, 1);
                 array_push($target_chart_data, $target);
             }
 
