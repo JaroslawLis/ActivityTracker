@@ -18,6 +18,7 @@
                     <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Average</th>
                     <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Current Target</th>
                     <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Surplus/Shortage</th>
+                    <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500 text-left block md:table-cell">Realization</th>
                 </tr>
             </thead>
             <tbody class="block md:table-row-group">
@@ -28,6 +29,7 @@
                         <td class="p-2 md:border md:border-grey-500 text-center block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Average</span>{{$activities['avg'] }}</td>
                         <td class="p-2 md:border md:border-grey-500 text-center block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Target</span>{{$activities['current_target']  }}</td>
                         <td class="p-2 md:border md:border-grey-500 text-center block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">+/-</span>{{ $activities['surplus_shortage'] }}</td>
+                        <td class="p-2 md:border md:border-grey-500 text-center block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">+/-</span>{{ $activities['realization'] }}%</td>
                     </tr>
                 @endforeach
             </tbody>

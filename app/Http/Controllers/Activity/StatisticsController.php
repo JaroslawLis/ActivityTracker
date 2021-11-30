@@ -48,6 +48,7 @@ class StatisticsController extends Controller
             $current_month_stats[$value['name']]['avg'] = ($value['type'] == 2) ? $this->ConvertTime($avg) : $avg;
             $current_month_stats[$value['name']]['current_target'] = ($value['type'] == 2) ? $this->ConvertTime($current_plan) : $current_plan;
             $current_month_stats[$value['name']]['surplus_shortage'] = ($value['type'] == 2) ? $this->ConvertTime($total - $current_plan) : $total - $current_plan;
+            $current_month_stats[$value['name']]['realization'] = round(($total / $current_plan) * 100, 1);
         }
 
         return view('statistics.current_month', ['current_month_stats' => $current_month_stats, 'month_name' => $month_name, 'year' => $year]);
