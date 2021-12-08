@@ -35,6 +35,8 @@ Route::group(['middleware' => ['auth']], function () {
         ->name('monthly_statistics');
     Route::get('charts', [ChartJSController::class, 'index'])
         ->name('current_charts');
+    Route::get('bar_charts', [ChartJSController::class, 'bar_charts'])
+        ->name('current_bar_charts');
 });
 
 require __DIR__ . '/auth.php';

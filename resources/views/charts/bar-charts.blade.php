@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="w-full bg-gray-100  ">
-<div class="bg-gray-400 py-4" ><a href="{{ route('current_bar_charts') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 border border-blue-700 rounded">Bar Charts</a></div>
+<div class="bg-gray-400 py-4"><a href="{{ route('current_bar_charts') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 border border-blue-700 rounded">Bar Charts</a><a href="{{ route('current_charts') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 border border-blue-700 rounded">Line Charts</a></div>
 <div class="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">
 <div class="flex flex-row flex-wrap flex-grow mt-2">
 <div class="hidden">{{$counter = 0}}</div>
@@ -20,29 +20,22 @@
                             <script>
                                 var labels =JSON.parse(`<?php echo json_encode($chart_data['labels']); ?>`);
                                 var values =JSON.parse(`<?php echo json_encode($chart_data['values']); ?>`);
-                                var target =JSON.parse(`<?php echo json_encode($chart_data['target']); ?>`);
+
 
 
                                 new Chart(document.getElementById("chartjs-{{($counter-1)}}"), {
-                                    "type": "line",
+                                    "type": "bar",
                                     "data": {
                                         "labels": labels,
                                         "datasets": [{
-                                            "label": "data",
+                                            "label": "values",
                                             "data": values,
                                             "fill": false,
                                             //"borderColor": "rgb(75, 192, 192)",
-                                            "borderColor": "#"+Math.floor(Math.random()*16777215).toString(16),
+                                            "backgroundColor": "#"+Math.floor(Math.random()*16777215).toString(16),
                                             "lineTension": 0.1
                                         },
-                                        {
 
-                                            "label": "Target",
-                                            "data": target,
-                                            "fill": false,
-                                            "borderColor": "#"+Math.floor(Math.random()*16777215).toString(16),
-                                            "lineTension": 0.1
-                                        }
                                         ]
                                     },
                                     "options": {}

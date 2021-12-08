@@ -51,4 +51,42 @@ class ChartJSController extends Controller
 
         return view('charts.chart-js', compact('charts_data'));
     }
+
+    public function bar_charts()
+    {
+        $today = Carbon::now();
+        $days_in_this_month = $today->diffInDays($today->copy()->firstOfMonth());
+        $yesterday = $today->copy()->subDay(1)->toDateString();
+        $firstOfmonth = $today->copy()->firstOfMonth()->toDateString();
+        $Activities = Engagement::whereDate('end_date', '>', $firstOfmonth)->orWhere('end_date', '=', null)->get();
+        $charts_data = array();
+        foreach ($Activities as $activity) {
+            $Checkins = Checkin::whereBetween('date', [$firstOfmonth, $yesterday])->where('id_engagement', '=', $activity->id)->get();
+            $chart_data = array();
+            $target = $activity->target;
+            $activity_name = $activity->name;
+            $label_day = $today->copy()->firstOfmonth();
+            for ($i = 1; $i <= $days_in_this_month; $i++) {
+                $day = $label_day->copy()->toDateString();
+                $label_day = $label_day->addDay(1);
+                $chart_data[$day] = 0;
+            }
+            foreach ($Checkins as $checkin) {
+                $chart_data[$checkin->date] = $checkin->value;
+            }
+            $values_chart_data = array();
+            $label_day = $today->copy()->firstOfmonth();
+            for ($i = 1; $i <= $days_in_this_month; $i++) {
+                $day = $label_day->copy()->toDateString();
+                $label_day = $label_day->addDay(1);
+                $values_chart_data[$day] = $chart_data[$day];
+            }
+
+            $charts_data[$activity_name] = [
+                "labels" => array_keys($values_chart_data), "values" => array_values($values_chart_data)
+            ];
+        }
+
+        return view('charts.bar-charts', compact('charts_data'));
+    }
 }
