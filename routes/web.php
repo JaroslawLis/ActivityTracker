@@ -5,17 +5,22 @@ use App\Http\Controllers\Activity\ActivityController;
 use App\Http\Controllers\Activity\CheckinController;
 use App\Http\Controllers\Activity\StatisticsController;
 use App\Http\Controllers\Activity\ChartJSController;
+use App\Http\Controllers\Activity\DashboardController;
 
 // temporary
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/', function () {
-        return view('layouts.dashboard');
-    })->name('main');
+    // Route::get('/', function () {
+    //     return view('layouts.dashboard');
+    // })->name('main');
+
+
+    Route::get('/', [DashboardController::class, 'index'])
+        ->name('main');
     Route::get('/list', [ActivityController::class, 'list'])
         ->name('list');
     Route::get('list/{activityId}', [ActivityController::class, 'show'])

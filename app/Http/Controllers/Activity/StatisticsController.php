@@ -29,6 +29,9 @@ class StatisticsController extends Controller
     {
         $today = Carbon::now();
         $today2 = Carbon::now();
+        $previous_month = $today->copy()->subMonth();
+        $previous_y = $previous_month->year;
+        $previous_m = $previous_month->month;
         $month_name = $today->monthName;
         $year = $today->year;
         $days_in_this_month = $today->diffInDays($today->copy()->firstOfMonth());
@@ -51,17 +54,27 @@ class StatisticsController extends Controller
             $current_month_stats[$value['name']]['realization'] = round(($total / $current_plan) * 100, 1);
         }
 
-        return view('statistics.current_month', ['current_month_stats' => $current_month_stats, 'month_name' => $month_name, 'year' => $year]);
+        return view('statistics.current_month', ['current_month_stats' => $current_month_stats, 'month_name' => $month_name, 'year' => $year, 'previous_y' => $previous_y, 'previous_m' => $previous_m]);
     }
 
     public function monthly_statistics(Request $request, int $year, int $month)
     {
         $month_date = Carbon::create($year, $month);
+        $first_date = Checkin::first()->only('date');
+        $previous_month = $month_date->copy()->subMonth();
+        $next_month = $month_date->copy()->addMonth();
+        $button_next_condition = ($next_month->isSameMonth(Carbon::now()));
+        $button_previous_condition = ($month_date->isSameMonth(Carbon::create($first_date['date'])));
+        $previous_y = $previous_month->year;
+        $previous_m = $previous_month->month;
+        $next_y = $next_month->year;
+        $next_m = $next_month->month;
         $month_name = $month_date->monthName;
         $days_in_this_month = $month_date->daysInMonth;
         $firstOfmonth = $month_date->firstOfMonth()->toDateString();
         $lastOfMonth = $month_date->lastOfMonth()->toDateString();
         $Activities = Engagement::whereDate('end_date', '>', $firstOfmonth)->orWhere('end_date', '=', null)->get();
+
         $month_stats = array();
         foreach ($Activities as $value) {
 
@@ -76,6 +89,6 @@ class StatisticsController extends Controller
             $month_stats[$value['name']]['realization'] = round(($total / $current_plan) * 100, 1);
         }
 
-        return view('statistics.month_stats', ['month_stats' => $month_stats, 'month_name' => $month_name, 'year' => $year]);
+        return view('statistics.month_stats', ['month_stats' => $month_stats, 'month_name' => $month_name, 'year' => $year, 'previous_y' => $previous_y, 'previous_m' => $previous_m, 'next_y' => $next_y, 'next_m' => $next_m, 'button_previous_condition' => $button_previous_condition, 'button_next_condition' => $button_next_condition]);
     }
 }
