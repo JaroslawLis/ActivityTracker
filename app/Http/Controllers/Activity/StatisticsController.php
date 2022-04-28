@@ -13,10 +13,13 @@ class StatisticsController extends Controller
     // convert minuts to hours:minutes format
     private function ConvertTime($value)
     {
+
         if ($value > 0) {
             $hours = floor($value / 60);
             $minutes = ($value % 60 <= 9) ? ('0' . $value % 60) : $value % 60;
-            return $hours . ':' . $minutes;
+
+            if ($value % 60 <= 9)
+                return $hours . ':' . $minutes;
         } else {
             $value = abs($value);
             $hours = floor($value / 60);
@@ -28,16 +31,25 @@ class StatisticsController extends Controller
     public function Statistics()
     {
         $today = Carbon::now();
-        $today2 = Carbon::now();
+
+        //condition fix bug in first day of month
+        if ($today == $today->startOfMonth()) {
+            $today = $today->subDays(1);
+            $days_in_this_month = $today->daysInMonth;
+        } else {
+            $days_in_this_month = $today->diffInDays($today->copy()->firstOfMonth());
+        }
+
         $previous_month = $today->copy()->subMonth();
         $previous_y = $previous_month->year;
         $previous_m = $previous_month->month;
         $month_name = $today->monthName;
         $year = $today->year;
-        $days_in_this_month = $today->diffInDays($today->copy()->firstOfMonth());
-        $firstOfmonth = $today2->firstOfMonth()->toDateString();
-        $yesterday = $today->subDay(1)->toDateString();
+        // $days_in_this_month = $today->diffInDays($today->copy()->firstOfMonth());
+        $firstOfmonth = $today->copy()->firstOfMonth()->toDateString();
+        $yesterday = $today->copy()->subDay(1)->toDateString();
         $Activities = Engagement::whereDate('end_date', '>', $firstOfmonth)->orWhere('end_date', '=', null)->get();
+
         $current_month_stats = array();
 
         foreach ($Activities as $value) {
@@ -47,6 +59,7 @@ class StatisticsController extends Controller
             $current_plan = $value['target'] * $days_in_this_month;
             // $avg = intval(ceil($Checkins->sum('value') / $days_in_this_month));
             $avg = round($Checkins->sum('value') / $days_in_this_month, 2);
+
             $current_month_stats[$value['name']]['total'] = ($value['type'] == 2) ? $this->ConvertTime($total) : $total;
             $current_month_stats[$value['name']]['avg'] = ($value['type'] == 2) ? $this->ConvertTime($avg) : $avg;
             $current_month_stats[$value['name']]['current_target'] = ($value['type'] == 2) ? $this->ConvertTime($current_plan) : $current_plan;

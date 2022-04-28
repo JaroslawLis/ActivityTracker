@@ -37,11 +37,12 @@ class ActivityController extends Controller
 
     public function show(Request $request, int $activityId)
     {
-        return $activityId;
+        $activity = Engagement::findOrFail($activityId);
+        return view('show', ['editId' => $activityId, 'activity' => $activity]);
     }
 
     public function edit(Request $request, int $activityId)
     {
-        return $activityId;
+        return view('edit', ['editId' => $activityId]);
     }
 }
