@@ -104,4 +104,41 @@ class StatisticsController extends Controller
 
         return view('statistics.month_stats', ['month_stats' => $month_stats, 'month_name' => $month_name, 'year' => $year, 'previous_y' => $previous_y, 'previous_m' => $previous_m, 'next_y' => $next_y, 'next_m' => $next_m, 'button_previous_condition' => $button_previous_condition, 'button_next_condition' => $button_next_condition]);
     }
+    public function day_statistics(Request $request, int $number_of_days)
+    {
+        $today = Carbon::now();
+
+        // dd(Carbon::now());
+        $month_name = $today->monthName;
+        $year = $today->year;
+        $yesterday = $today->copy()->subDay(1)->toDateString();
+        $firstOfmonth = $today->copy()->firstOfMonth()->toDateString();
+        $Activities = Engagement::whereDate('end_date', '>', $firstOfmonth)->orWhere('end_date', '=', null)->get();
+        $starting_day = $today->copy()->subDay($number_of_days)->toDateString();
+        // dd($starting_day);
+        // $days_in_this_month = $today->diffInDays($today->copy()->firstOfMonth());
+        $current_days_stats = array();
+
+        foreach ($Activities as $value) {
+
+            $Checkins = Checkin::whereBetween('date', [$starting_day, $yesterday])->where('id_engagement', '=', $value['id'])->get();
+            // dd($Checkins);
+            $total = $Checkins->sum('value');
+            $current_plan = $value['target'] * $number_of_days;
+            // $avg = intval(ceil($Checkins->sum('value') / $days_in_this_month));
+            $avg = round($Checkins->sum('value') / $number_of_days, 2);
+
+            // $current_days_stats[$value['name']]['total'] = ($value['type'] == 2) ? $this->ConvertTime($total) : $total;
+            $current_days_stats[$value['name']]['total'] = ($value['type'] == 2) ? $total : $total;
+            //dd(($value['type']) . "-" . $avg);
+            $current_days_stats[$value['name']]['avg'] = ($value['type'] == 2) ? $avg : $avg;
+            // dd($value, $total, $current_plan, $avg);
+            $current_days_stats[$value['name']]['current_target'] = ($value['type'] == 2) ? $current_plan : $current_plan;
+            $current_days_stats[$value['name']]['surplus_shortage'] = ($value['type'] == 2) ? $total - $current_plan : $total - $current_plan;
+            $current_days_stats[$value['name']]['realization'] = round(($total / $current_plan) * 100, 1);
+            // dd($current_days_stats);
+        }
+        // dd($current_days_stats);
+        return view('statistics.days_stats', ['current_days_stats' => $current_days_stats, 'number_of_days' => $number_of_days]);
+    }
 }

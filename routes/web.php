@@ -34,6 +34,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/add_in_checkin', [CheckinController::class, 'add_in_checkin']);
     Route::get('/statistics', [StatisticsController::class, 'statistics'])
         ->name('statistics');
+    Route::get('/days_stat/{number_of_days}', [StatisticsController::class, 'day_statistics'])
+        ->name('days_statistics');
+
     Route::get('/monthly_stat/{year}/{month}', [StatisticsController::class, 'monthly_statistics'])
         ->name('monthly_statistics');
     Route::get('charts', [ChartJSController::class, 'index'])
