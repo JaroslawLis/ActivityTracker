@@ -6,11 +6,21 @@
         <div class="pt-3 bg-gray-800">
             <div class="p-4 text-2xl text-white shadow rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800">
                 <h3 class="pl-2 font-bold text-center">Current statistics for last {{ $number_of_days }} days</h3>
+                <h2 class="pl-2 text-center">From {{ $starting_day }} to {{ $ending_day }}</h2>
             </div>
-            {{-- <div class="py-4 bg-gradient-to-r from-blue-900 to-gray-800 mt-14 md:mt-0"><a
-                    href="monthly_stat/{{ $previous_y }}/{{ $previous_m }}"
-                    class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">Previous
-                    month</a></div> --}}
+            <div>
+                <div class="py-4 bg-gradient-to-r from-blue-900 to-gray-800 mt-14 md:mt-0"><a href="/days_stat/3"
+                        class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">Last
+                        3 days</a><a href="/days_stat/7"
+                        class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">
+                        Last
+                        7 days</a><a href="/days_stat/14"
+                        class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">Last
+                        14 days</a><a href="/days_stat/30"
+                        class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">Last
+                        30 days</a>
+                </div>
+            </div>
         </div>
         <div class="p-10 ">
             <table class="block min-w-full border-collapse rounded-lg shadow-xl md:table">

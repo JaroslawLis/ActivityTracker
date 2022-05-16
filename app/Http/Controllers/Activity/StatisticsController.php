@@ -15,18 +15,17 @@ class StatisticsController extends Controller
     {
 
         if ($value > 0) {
-            $hours = floor($value / 60);
-            $minutes = ($value % 60 <= 9) ? ('0' . $value % 60) : $value % 60;
-
-            if ($value % 60 <= 9)
-                return $hours . ':' . $minutes;
+            $hours = strval(floor($value / 60));
+            $minutes = strval(($value % 60 <= 9) ? ('0' . $value % 60) : $value % 60);
+            return $hours . ":" . $minutes;
         } else {
             $value = abs($value);
-            $hours = floor($value / 60);
-            $minutes = ($value % 60 <= 9) ? ('0' . $value % 60) : $value % 60;
+            $hours = strval(round(floor($value / 60), 0));
+            $minutes = strval(($value % 60 <= 9) ? ('0' . $value % 60) : $value % 60);
             return ' -' . $hours . ':' . $minutes;
         }
     }
+
 
     public function Statistics()
     {
@@ -61,7 +60,7 @@ class StatisticsController extends Controller
             $avg = round($Checkins->sum('value') / $days_in_this_month, 2);
 
             $current_month_stats[$value['name']]['total'] = ($value['type'] == 2) ? $this->ConvertTime($total) : $total;
-            $current_month_stats[$value['name']]['avg'] = ($value['type'] == 2) ? $this->ConvertTime($avg) : $avg;
+            $current_month_stats[$value['name']]['avg'] = ($value['type'] == 2) ? $this->ConvertTime(intval($avg)) : $avg;
             $current_month_stats[$value['name']]['current_target'] = ($value['type'] == 2) ? $this->ConvertTime($current_plan) : $current_plan;
             $current_month_stats[$value['name']]['surplus_shortage'] = ($value['type'] == 2) ? $this->ConvertTime($total - $current_plan) : $total - $current_plan;
             $current_month_stats[$value['name']]['realization'] = round(($total / $current_plan) * 100, 1);
@@ -96,7 +95,7 @@ class StatisticsController extends Controller
             $current_plan = $value['target'] * $days_in_this_month;
             $avg = round($Checkins->sum('value') / $days_in_this_month, 2);
             $month_stats[$value['name']]['total'] = ($value['type'] == 2) ? $this->ConvertTime($total) : $total;
-            $month_stats[$value['name']]['avg'] = ($value['type'] == 2) ? $this->ConvertTime($avg) : $avg;
+            $month_stats[$value['name']]['avg'] = ($value['type'] == 2) ? $this->ConvertTime(intval($avg)) : $avg;
             $month_stats[$value['name']]['current_target'] = ($value['type'] == 2) ? $this->ConvertTime($current_plan) : $current_plan;
             $month_stats[$value['name']]['surplus_shortage'] = ($value['type'] == 2) ? $this->ConvertTime($total - $current_plan) : $total - $current_plan;
             $month_stats[$value['name']]['realization'] = round(($total / $current_plan) * 100, 1);
@@ -107,38 +106,27 @@ class StatisticsController extends Controller
     public function day_statistics(Request $request, int $number_of_days)
     {
         $today = Carbon::now();
-
-        // dd(Carbon::now());
-        $month_name = $today->monthName;
-        $year = $today->year;
         $yesterday = $today->copy()->subDay(1)->toDateString();
+        $starting_date = $today->copy()->subDay($number_of_days)->format('d-m-Y'); //to blade
+        $ending_date = $today->copy()->subDay(1)->format('d-m-Y'); //to blade
         $firstOfmonth = $today->copy()->firstOfMonth()->toDateString();
         $Activities = Engagement::whereDate('end_date', '>', $firstOfmonth)->orWhere('end_date', '=', null)->get();
         $starting_day = $today->copy()->subDay($number_of_days)->toDateString();
-        // dd($starting_day);
-        // $days_in_this_month = $today->diffInDays($today->copy()->firstOfMonth());
         $current_days_stats = array();
 
         foreach ($Activities as $value) {
 
             $Checkins = Checkin::whereBetween('date', [$starting_day, $yesterday])->where('id_engagement', '=', $value['id'])->get();
-            // dd($Checkins);
             $total = $Checkins->sum('value');
             $current_plan = $value['target'] * $number_of_days;
-            // $avg = intval(ceil($Checkins->sum('value') / $days_in_this_month));
             $avg = round($Checkins->sum('value') / $number_of_days, 2);
 
-            // $current_days_stats[$value['name']]['total'] = ($value['type'] == 2) ? $this->ConvertTime($total) : $total;
-            $current_days_stats[$value['name']]['total'] = ($value['type'] == 2) ? $total : $total;
-            //dd(($value['type']) . "-" . $avg);
+            $current_days_stats[$value['name']]['total'] = ($value['type'] == 2) ? $this->ConvertTime($total) : $total;
             $current_days_stats[$value['name']]['avg'] = ($value['type'] == 2) ? $avg : $avg;
-            // dd($value, $total, $current_plan, $avg);
-            $current_days_stats[$value['name']]['current_target'] = ($value['type'] == 2) ? $current_plan : $current_plan;
-            $current_days_stats[$value['name']]['surplus_shortage'] = ($value['type'] == 2) ? $total - $current_plan : $total - $current_plan;
+            $current_days_stats[$value['name']]['current_target'] = ($value['type'] == 2) ? $this->ConvertTime($current_plan) : $current_plan;
+            $current_days_stats[$value['name']]['surplus_shortage'] = ($value['type'] == 2) ? $this->ConvertTime($total - $current_plan) : $total - $current_plan;
             $current_days_stats[$value['name']]['realization'] = round(($total / $current_plan) * 100, 1);
-            // dd($current_days_stats);
         }
-        // dd($current_days_stats);
-        return view('statistics.days_stats', ['current_days_stats' => $current_days_stats, 'number_of_days' => $number_of_days]);
+        return view('statistics.days_stats', ['current_days_stats' => $current_days_stats, 'number_of_days' => $number_of_days, 'starting_day' => $starting_date, 'ending_day' => $ending_date]);
     }
 }
