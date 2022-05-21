@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/create', [ActivityController::class, 'index'])
         ->name('create');
     Route::post('/create', [ActivityController::class, 'create']);
+    Route::post('/update/{editId}', [ActivityController::class, 'update']);
     Route::get('/add_checkin', [CheckinController::class, 'index'])
         ->name('add_checkin');
     Route::post('/add_checkin', [CheckinController::class, 'add_checkin']);

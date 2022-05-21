@@ -30,10 +30,9 @@ class StatisticsController extends Controller
     public function Statistics()
     {
         $today = Carbon::now();
-
         //condition fix bug in first day of month
-        if ($today == $today->startOfMonth()) {
-            $today = $today->subDays(1);
+        if ($today == $today->copy()->startOfMonth()) {
+            $today = $today->copy()->subDays(1);
             $days_in_this_month = $today->daysInMonth;
         } else {
             $days_in_this_month = $today->diffInDays($today->copy()->firstOfMonth());
