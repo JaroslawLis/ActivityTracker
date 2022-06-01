@@ -32,10 +32,7 @@ class ActivityController extends Controller
 
     public function update(Request $request, int $editId)
     {
-        //dd($editId, $request);
-        //$activity = Engagement::whereID($editId);
         $activity = Engagement::findOrFail($editId);
-        //dd($activity->name);
         if ($activity->name != request('name')) {
             $activity->name = request('name');
         };
@@ -57,7 +54,7 @@ class ActivityController extends Controller
         if ($activity->max_value != request('max_value')) {
             $activity->max_value = request('max_value');
         };
-        //dd(request('name'));
+
         $activity->save();
         return redirect('/')->with('success', 'Update success');
     }

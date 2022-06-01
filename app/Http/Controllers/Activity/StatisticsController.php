@@ -31,13 +31,12 @@ class StatisticsController extends Controller
     {
         $today = Carbon::now();
         //condition fix bug in first day of month
-        if ($today == $today->copy()->startOfMonth()) {
+        if ($today->toDateString() == $today->copy()->startOfMonth()->toDateString()) {
             $today = $today->copy()->subDays(1);
             $days_in_this_month = $today->daysInMonth;
         } else {
             $days_in_this_month = $today->diffInDays($today->copy()->firstOfMonth());
         }
-
         $previous_month = $today->copy()->subMonth();
         $previous_y = $previous_month->year;
         $previous_m = $previous_month->month;
