@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="flex-col pt-8 pl-8 pr-8 mx-auto bg-white">
+    <div class="flex-col h-full pt-8 pb-8 pl-8 pr-8 mx-auto bg-white">
         <div>Current date: <strong> {{ $last_entry_date }}</strong> </div>
         @if (session('status'))
             <div class="pt-8 pl-8 text-lg font-bold text-red-500">

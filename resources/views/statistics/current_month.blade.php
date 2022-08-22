@@ -11,6 +11,7 @@
                     href="monthly_stat/{{ $previous_y }}/{{ $previous_m }}"
                     class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">Previous
                     month</a></div>
+
             <div>
                 <div class="py-4 bg-gradient-to-r from-blue-900 to-gray-800 mt-14 md:mt-0"><a href="/days_stat/3"
                         class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">Last

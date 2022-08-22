@@ -9,16 +9,23 @@
                 <h2 class="pl-2 text-center">From {{ $starting_day }} to {{ $ending_day }}</h2>
             </div>
             <div>
-                <div class="py-4 bg-gradient-to-r from-blue-900 to-gray-800 mt-14 md:mt-0"><a href="/days_stat/3"
+                <div class="py-4 bg-gradient-to-r from-blue-900 to-gray-800 mt-14 md:mt-0">
+                    <a href="/days_stat/3"
                         class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">Last
-                        3 days</a><a href="/days_stat/7"
+                        3 days</a>
+                    <a href="/days_stat/7"
                         class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">
                         Last
-                        7 days</a><a href="/days_stat/14"
+                        7 days</a>
+                    <a href="/days_stat/14"
                         class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">Last
-                        14 days</a><a href="/days_stat/30"
+                        14 days</a>
+                    <a href="/days_stat/30"
                         class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">Last
                         30 days</a>
+                    <a href="{{ route('statistics') }}"
+                        class="px-4 py-4 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700">Current
+                        Month</a>
                 </div>
             </div>
         </div>
