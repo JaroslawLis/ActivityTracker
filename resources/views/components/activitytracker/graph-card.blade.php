@@ -10,20 +10,16 @@
                 @php
                     $counter = 0;
                 @endphp
-
                 @foreach ($charts_data as $name => $chart_data)
                     <div class="w-full p-6 md:w-1/2 xl:w-1/3">
                         @php
                             $chart_data['name'] = $name;
                             $chart_data['counter'] = $counter;
                         @endphp
-
-                        <x-activitytracker.graph-card :chartData="$chart_data" />
+                        <x-graph-card :chartData="$chart_data" />
                         @php
                             $counter++;
                         @endphp
-
-
                     </div>
                 @endforeach
             </div>
