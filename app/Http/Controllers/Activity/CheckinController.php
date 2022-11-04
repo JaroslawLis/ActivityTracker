@@ -7,7 +7,6 @@ use App\Models\Engagement;
 use App\Models\Checkin;
 use Illuminate\View\View;
 use Carbon\Carbon;
-
 use Illuminate\Http\Request;
 
 class CheckinController extends Controller
@@ -52,7 +51,7 @@ class CheckinController extends Controller
             $checkin->save();
         };
 
-        return redirect('add_checkin')->with('status', 'Form Data Has Been inserted');
+        return redirect('add_checkin')->with('status', 'Checkin created successfully!');
     }
 
     public function add_in_checkin()
