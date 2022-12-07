@@ -1,6 +1,6 @@
 # Activity Tracker służy do monitorowania własnej aktywności
 
-## https://jarek.cfolks.pl/
+## http://at-git.stronazen.pl/
 
 Login do celów testowych:
 
